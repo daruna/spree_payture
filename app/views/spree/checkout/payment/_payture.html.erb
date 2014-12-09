@@ -1,0 +1,9 @@
+<% payment_id = SecureRandom.uuid %>
+<% description = ::Paytureman::PaymentDescription.new(product: @order.products.map(&:name).join('<br>'), total: @order.total, SessionType: :Pay, url: handle_payture_url(@order.id, payment_id: payment_id)) %>
+<% paytureman_payment = ::Paytureman::PaymentNew.new(payment_id, @order.total, request.remote_ip, Rails.env) %>
+<% paytureman_payment = paytureman_payment.prepare(description) %>
+<% if paytureman_payment.respond_to?(:url) %>
+  <%= link_to Spree.t("pay"), paytureman_payment.url, class: "btn" %>
+<% else %>
+  <%= Spree.t("duplicate_order_id") %>
+<% end %>
