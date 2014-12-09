@@ -1,7 +1,7 @@
 SpreePayture
 ============
 
-Introduction goes here.
+Payture payments integration with Spree.
 
 Installation
 ------------
@@ -9,14 +9,21 @@ Installation
 Add spree_payture to your Gemfile:
 
 ```ruby
-gem 'spree_payture'
+gem 'spree_payture', github: 'webgradus/spree_payture'
 ```
+Add 'paytureman' gem to your Gemfile:
 
-Bundle your dependencies and run the installation generator:
+```ruby
+gem 'paytureman', github: 'llxff/paytureman', branch: 'success_url'
+```
+Add some configuration in config/initializers/payture.rb:
 
-```shell
-bundle
-bundle exec rails g spree_payture:install
+```ruby
+Paytureman::Configuration.setup Rails.env do |config|
+  config.host = "sandbox"
+  config.key = "TestShop"
+  config.password = "123"
+end
 ```
 
 Testing
