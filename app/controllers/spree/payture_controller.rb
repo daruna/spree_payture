@@ -3,7 +3,6 @@ class Spree::PaytureController < ApplicationController
   def handle
     config = Paytureman::Configuration.instance.configurations[Rails.env.to_sym]
     api = Paytureman::Api.new(config.host, config.key, config.password)
-    byebug
     if api.status(params["payment_id"]) == :charged
       @order = Spree::Order.find(params[:id])
       payment_method = @order.available_payment_methods.detect {|pm| pm.is_a?(Spree::Gateway::Payture) }
