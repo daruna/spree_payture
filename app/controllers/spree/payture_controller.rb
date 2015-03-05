@@ -8,7 +8,8 @@ class Spree::PaytureController < ApplicationController
       payment_method = @order.available_payment_methods.detect {|pm| pm.is_a?(Spree::Gateway::Payture) }
       @order.payments.create!({
         :amount => @order.total,
-        :payment_method => payment_method
+        :payment_method => payment_method,
+        :state => 'completed'
       })
       unless @order.next
         flash[:error] = @order.errors.full_messages.join("\n")
