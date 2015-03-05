@@ -6,11 +6,12 @@ class Spree::PaytureController < ApplicationController
     if api.status(params["payment_id"]) == :charged
       @order = Spree::Order.find(params[:id])
       payment_method = @order.available_payment_methods.detect {|pm| pm.is_a?(Spree::Gateway::Payture) }
-      @order.payments.create!({
+      payment = @order.payments.create!({
         :amount => @order.total,
         :payment_method => payment_method,
         :state => 'completed'
       })
+      @order.payment_total += payment.amount
       unless @order.next
         flash[:error] = @order.errors.full_messages.join("\n")
         redirect_to checkout_state_path(@order.state) and return

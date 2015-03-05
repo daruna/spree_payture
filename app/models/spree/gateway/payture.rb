@@ -11,6 +11,11 @@ module Spree
       false
     end
 
+    def purchase(money, source, gateway_options)
+      # dumb - we do this via redirect
+      ActiveMerchant::Billing::Response.new(true, "")
+    end
+
     def provider_class
       Payture::ApiWrapper
     end
